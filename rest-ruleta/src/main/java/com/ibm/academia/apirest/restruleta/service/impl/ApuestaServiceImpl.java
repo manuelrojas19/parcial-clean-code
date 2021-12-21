@@ -11,55 +11,57 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 @Service
 @Slf4j
 public class ApuestaServiceImpl implements ApuestaService {
+    private static final String RULETA_NOT_FOUND_ERROR_MSG = "No se encontró la ruleta para realizar apuestas";
+    private static final String RULETA_CERRADA_ERROR_MSG = "La ruleta se encuentra cerrada, no se pueden realizar apuestas";
+
     @Autowired
     private RuletaRepository ruletaRepository;
 
     @Autowired
     private ApuestaRepository apuestaRepository;
 
-
     @Override
     @Transactional
     public Apuesta apostar(Apuesta apuesta, Long ruletaId) {
         Ruleta ruleta = ruletaRepository.findById(ruletaId)
-                .orElseThrow(() -> new NotFoundException("No se encontró la ruleta"));
+                .orElseThrow(() -> new NotFoundException(RULETA_NOT_FOUND_ERROR_MSG));
         apuesta.setRuleta(ruleta);
 
         if (!ruleta.getEstado().equals(Estado.ABIERTO))
-            throw new BadRequestException("La ruleta no se encuentra abierta");
+            throw new BadRequestException(RULETA_CERRADA_ERROR_MSG);
 
-        Integer num = (int) (Math.random() * 36);
-
-        Color[] colors = Color.values();
-        Color color = colors[(Math.random() * 1) > 0.5 ? 1 : 0];
-
-        if (Objects.nonNull(apuesta.getNumero()) && Objects.nonNull(apuesta.getColor())) {
-            if (num.equals(apuesta.getNumero()) && color.equals(apuesta.getColor())) {
-                apuesta.setResultado(Resultado.GANADOR);
-            } else {
-                apuesta.setResultado(Resultado.PERDEDOR);
-            }
-        } else if (Objects.nonNull(apuesta.getColor())) {
-            if (color.equals(apuesta.getColor()))
-                apuesta.setResultado(Resultado.GANADOR);
-            else {
-                apuesta.setResultado(Resultado.PERDEDOR);
-            }
-        } else if (Objects.nonNull(apuesta.getNumero())) {
-            if (num.equals(apuesta.getNumero()))
-                apuesta.setResultado(Resultado.GANADOR);
-            else {
-                apuesta.setResultado(Resultado.PERDEDOR);
-            }
+        if (evaluarApuesta(apuesta)) {
+            apuesta.setResultado(Resultado.GANADOR);
+        } else {
+            apuesta.setResultado(Resultado.PERDEDOR);
         }
 
         return apuestaRepository.save(apuesta);
     }
+
+    private boolean evaluarApuesta(Apuesta apuesta) {
+        boolean res = false;
+
+        Integer num = (int) (Math.random() * 36);
+        Color[] colors = Color.values();
+        Color color = colors[(Math.random() * 1) > 0.5 ? 1 : 0];
+
+        if (Objects.nonNull(apuesta.getNumero()) && Objects.nonNull(apuesta.getColor())) {
+            if (num.equals(apuesta.getNumero()) && color.equals(apuesta.getColor()))
+                res = true;
+        } else if (Objects.nonNull(apuesta.getColor())) {
+            if (color.equals(apuesta.getColor()))
+                res = true;
+        } else if (Objects.nonNull(apuesta.getNumero())) {
+            if (num.equals(apuesta.getNumero()))
+                res = true;
+        }
+        return res;
+    }
+
 }

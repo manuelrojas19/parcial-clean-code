@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -35,6 +33,11 @@ public class Apuesta {
     @Positive
     private BigDecimal dineroApostado;
 
+    @NotNull(message = "No puede ser nulo")
+    @NotBlank(message = "No puede ser vacio")
+    @Column(length = 60)
+    private String nombreApostador;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Resultado resultado;
@@ -44,5 +47,16 @@ public class Apuesta {
     @JsonIgnore
     private Ruleta ruleta;
 
+    @Column(updatable = false)
+    private Date createdAt;
+
+    private Date updatedAt;
+
+    @PrePersist
+    private void antesPersistir()
+    {
+        this.createdAt = new Date();
+        this.updatedAt = new Date();
+    }
 
 }

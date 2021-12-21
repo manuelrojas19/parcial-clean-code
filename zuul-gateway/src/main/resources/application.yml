@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: zuul-server
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+zuul:
+  routes:
+    ruleta:
+      service-id: rest-ruleta
+      path: /api/v1/ruletas/**
+      strip-prefix: false
+server:
+  port: 8090
+

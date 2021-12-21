@@ -1,6 +1,8 @@
 spring:
   jackson:
     default-property-inclusion: NON_NULL
+  application:
+    name: rest-ruleta
   datasource:
     url: jdbc:h2:mem:mydb
     username: sa
@@ -11,5 +13,10 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: create
-  application:
-    name: ruleta-api
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+server:
+  port: 8100

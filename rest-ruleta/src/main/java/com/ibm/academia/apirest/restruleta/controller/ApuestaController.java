@@ -18,10 +18,13 @@ public class ApuestaController {
     private ApuestaService apuestaService;
 
     /**
-     * Método que crea una ruleta para ser utilizada en apuestas
+     * Método para realizar una apuesta en una ruleta que se encuentre abierta
      *
-     * @param apuesta objeto con los datos de la apuesta a crear.
-     * @return response entity que contiene la apuesta creada y el estado de esta.
+     * @param apuesta RequestBody de un objeto con los datos de la apuesta a crear, se debe incluir un color
+     *                a apostar, un número o ambos y el monto a apostar, máximo 10000.
+     * @param id      Id de la ruleta donde se realizara la apuesta, esta ruleta debe tener el estado abierto,
+     *                en caso contrario la capa de servicio lanzara una excepción.
+     * @return response entity que contiene los datos la apuesta creada y el resultado de esta.
      */
     @PostMapping("/ruletas/{id}/apuestas")
     private ResponseEntity<Apuesta> apostar(@RequestBody Apuesta apuesta, @PathVariable Long id) {

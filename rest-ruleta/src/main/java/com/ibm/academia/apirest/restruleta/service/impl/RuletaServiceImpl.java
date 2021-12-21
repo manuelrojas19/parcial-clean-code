@@ -26,6 +26,7 @@ public class RuletaServiceImpl implements RuletaService {
     private ApuestaRepository apuestaRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Ruleta> findAll() {
         List<Ruleta> ruletas = (List<Ruleta>) ruletaRepository.findAll();
         if (ruletas.isEmpty())
