@@ -1,6 +1,6 @@
 package com.ibm.academia.apirest.restruleta.service.impl;
 
-import com.ibm.academia.apirest.restruleta.entities.*;
+import com.ibm.academia.apirest.restruleta.entity.*;
 import com.ibm.academia.apirest.restruleta.exception.BadRequestException;
 import com.ibm.academia.apirest.restruleta.exception.NotFoundException;
 import com.ibm.academia.apirest.restruleta.repository.ApuestaRepository;
@@ -19,11 +19,14 @@ public class ApuestaServiceImpl implements ApuestaService {
     private static final String RULETA_NOT_FOUND_ERROR_MSG = "No se encontró la ruleta para realizar apuestas";
     private static final String RULETA_CERRADA_ERROR_MSG = "La ruleta se encuentra cerrada, no se pueden realizar apuestas";
 
-    @Autowired
-    private RuletaRepository ruletaRepository;
+    private final RuletaRepository ruletaRepository;
+    private final ApuestaRepository apuestaRepository;
 
     @Autowired
-    private ApuestaRepository apuestaRepository;
+    public ApuestaServiceImpl(RuletaRepository ruletaRepository, ApuestaRepository apuestaRepository) {
+        this.ruletaRepository = ruletaRepository;
+        this.apuestaRepository = apuestaRepository;
+    }
 
     @Override
     @Transactional

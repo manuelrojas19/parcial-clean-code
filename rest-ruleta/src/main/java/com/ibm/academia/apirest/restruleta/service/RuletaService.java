@@ -1,7 +1,7 @@
 package com.ibm.academia.apirest.restruleta.service;
 
-import com.ibm.academia.apirest.restruleta.entities.Apuesta;
-import com.ibm.academia.apirest.restruleta.entities.Ruleta;
+import com.ibm.academia.apirest.restruleta.entity.Apuesta;
+import com.ibm.academia.apirest.restruleta.entity.Ruleta;
 
 import java.util.List;
 

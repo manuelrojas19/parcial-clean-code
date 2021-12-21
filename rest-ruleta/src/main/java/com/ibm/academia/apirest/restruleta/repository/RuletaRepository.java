@@ -1,6 +1,6 @@
 package com.ibm.academia.apirest.restruleta.repository;
 
-import com.ibm.academia.apirest.restruleta.entities.Ruleta;
+import com.ibm.academia.apirest.restruleta.entity.Ruleta;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,8 +1,8 @@
 package com.ibm.academia.apirest.restruleta.service.impl;
 
-import com.ibm.academia.apirest.restruleta.entities.Apuesta;
-import com.ibm.academia.apirest.restruleta.entities.Estado;
-import com.ibm.academia.apirest.restruleta.entities.Ruleta;
+import com.ibm.academia.apirest.restruleta.entity.Apuesta;
+import com.ibm.academia.apirest.restruleta.entity.Estado;
+import com.ibm.academia.apirest.restruleta.entity.Ruleta;
 import com.ibm.academia.apirest.restruleta.exception.BadRequestException;
 import com.ibm.academia.apirest.restruleta.exception.NotFoundException;
 import com.ibm.academia.apirest.restruleta.repository.ApuestaRepository;
@@ -20,10 +20,14 @@ public class RuletaServiceImpl implements RuletaService {
     private static final String ACTUALMENTE_ABIERTA_ERROR_MSG = "La ruleta ya esta abierta";
     private static final String ACTUALMENTE_CERRADA_ERROR_MSG = "La ruleta ya esta cerrada";
 
+    private final RuletaRepository ruletaRepository;
+    private final ApuestaRepository apuestaRepository;
+
     @Autowired
-    private RuletaRepository ruletaRepository;
-    @Autowired
-    private ApuestaRepository apuestaRepository;
+    public RuletaServiceImpl(RuletaRepository ruletaRepository, ApuestaRepository apuestaRepository) {
+        this.ruletaRepository = ruletaRepository;
+        this.apuestaRepository = apuestaRepository;
+    }
 
     @Override
     @Transactional(readOnly = true)

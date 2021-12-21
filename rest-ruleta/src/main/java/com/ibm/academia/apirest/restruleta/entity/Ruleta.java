@@ -1,10 +1,7 @@
-package com.ibm.academia.apirest.restruleta.entities;
+package com.ibm.academia.apirest.restruleta.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -18,6 +15,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 public class Ruleta implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

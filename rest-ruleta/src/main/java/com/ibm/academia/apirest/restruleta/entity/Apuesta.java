@@ -1,10 +1,7 @@
-package com.ibm.academia.apirest.restruleta.entities;
+package com.ibm.academia.apirest.restruleta.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -16,6 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 public class Apuesta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +28,7 @@ public class Apuesta {
 
     @NotNull(message = "No puede ser nulo")
     @Max(value = 10000, message = "No puede ser mas de 10000")
-    @Positive
+    @Positive(message = "No puede ser negativo")
     private BigDecimal dineroApostado;
 
     @NotNull(message = "No puede ser nulo")

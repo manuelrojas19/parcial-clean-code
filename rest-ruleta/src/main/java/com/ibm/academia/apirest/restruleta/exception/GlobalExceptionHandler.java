@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.validation.ConstraintViolationException;
+import java.util.HashMap;
+import java.util.Map;
+
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
@@ -34,6 +38,20 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> notReadableBodyHandler(HttpMessageNotReadableException e) {
         log.error(e.getMessage());
         ExceptionResponse response = ExceptionResponse.builder().message(NOT_READABLE_ERROR_MSG).build();
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    public ResponseEntity<?> constraintViolationHandler(ConstraintViolationException e) {
+        log.error(e.getConstraintViolations().toString());
+        Map<String, String> errors = new HashMap<>();
+        e.getConstraintViolations().forEach(c ->
+                errors.put(c.getPropertyPath().toString(), c.getMessage())
+        );
+        Map<String, Object> response = new HashMap<>();
+        response.put("Message", NOT_READABLE_ERROR_MSG);
+        response.put("Errors", errors);
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

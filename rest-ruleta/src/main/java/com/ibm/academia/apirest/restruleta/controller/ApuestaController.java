@@ -1,11 +1,11 @@
 package com.ibm.academia.apirest.restruleta.controller;
 
-import com.ibm.academia.apirest.restruleta.dto.RuletaDto;
-import com.ibm.academia.apirest.restruleta.entities.Apuesta;
-import com.ibm.academia.apirest.restruleta.entities.Ruleta;
-import com.ibm.academia.apirest.restruleta.mapper.RuletaMapper;
+import com.ibm.academia.apirest.restruleta.entity.Apuesta;
 import com.ibm.academia.apirest.restruleta.service.ApuestaService;
-import com.ibm.academia.apirest.restruleta.service.RuletaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,9 +27,13 @@ public class ApuestaController {
      * @return response entity que contiene los datos la apuesta creada y el resultado de esta.
      */
     @PostMapping("/ruletas/{id}/apuestas")
+    @Operation(summary = "Realizar una apuesta en una ruleta que se encuentre abierta")
+    @ApiResponse(responseCode = "201", description = "Datos de la apuesta realizada y el resultado de esta.",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = Apuesta.class)
+            )})
     private ResponseEntity<Apuesta> apostar(@RequestBody Apuesta apuesta, @PathVariable Long id) {
         Apuesta res = apuestaService.apostar(apuesta, id);
         return new ResponseEntity<>(res, HttpStatus.CREATED);
     }
-
 }

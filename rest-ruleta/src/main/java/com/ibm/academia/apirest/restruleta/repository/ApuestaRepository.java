@@ -1,6 +1,6 @@
 package com.ibm.academia.apirest.restruleta.repository;
 
-import com.ibm.academia.apirest.restruleta.entities.Apuesta;
+import com.ibm.academia.apirest.restruleta.entity.Apuesta;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
